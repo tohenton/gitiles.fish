@@ -1,6 +1,6 @@
 # -*- mode: fish -*-
 
-function gitiles --description Show gitiles URL of a commit
+function gitiles --description "Show gitiles URL of a commit"
     # repo command ins not installed
     if not type -q repo
         echo "fatal: no repo command installed" > /dev/stderr
@@ -8,7 +8,7 @@ function gitiles --description Show gitiles URL of a commit
     end
 
     # executed in not repo repository
-    if repo help | grep -q "repo is not yet installed"
+    if not test -d ".repo"
         echo "fatal: not a repo repository: .repo" > /dev/stderr
         return 1
     end
@@ -20,10 +20,8 @@ function gitiles --description Show gitiles URL of a commit
     end
 
     set -l project (repo list . | cut -d":" -f 2 | string trim)
-    set -l hash
-    if [ (count $argv) -eq 0 ]
-        set hash (git rev-parse HEAD)
-    else
+    set -l hash (git rev-parse HEAD)
+    if test (count $argv) -ne 0
         set hash $argv[1]
     end
 
