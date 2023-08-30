@@ -8,8 +8,8 @@ function gitiles --description "Show gitiles URL of a commit"
     end
 
     # executed in not repo repository
-    if not test -d ".repo"
-        echo "fatal: not a repo repository: .repo" > /dev/stderr
+    if not repo info > /dev/null 2>&1
+        echo "fatal: not a repo repository" > /dev/stderr
         return 1
     end
 
